@@ -23,11 +23,6 @@ public class RefashTokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-                //        //1.获取session
-                //        HttpSession session = request.getSession();
-                //        //2.获取session中的用户
-                //        Object user= session.getAttribute("user");
-        //1.获取请求头的token
         String token = request.getHeader("authorization");
         if (StrUtil.isBlank(token)){
             return true;
