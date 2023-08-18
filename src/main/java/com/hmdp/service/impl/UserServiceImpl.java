@@ -24,7 +24,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static com.hmdp.utils.RedisConstants.*;
-import static com.hmdp.utils.SystemConstants.USER_NICK_NAME_PREFIX;
+import static com.hmdp.utils.SystemConstants.*;
 
 /**
  * <p>
@@ -50,9 +50,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         //3.符合，生成验证码
         String code = RandomUtil.randomNumbers(6);
-                                                            //        //4.保存验证码到session
-                                                            //        session.setAttribute("code",code);
-
         //4.保存验证码到redis
         stringRedisTemplate.opsForValue().set(LOGIN_CODE_KEY + phone,code,LOGIN_CODE_TTL, TimeUnit.MINUTES);
 
@@ -70,13 +67,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             //2.如果不符合，返回错误信息
             return Result.fail("手机格式错误");
         }
-                                                        //3.校验验证码
-                                                        // String code= (String) session.getAttribute("code");
-                                                        //        String formCode= loginForm.getCode();
-                                                        //        if(code == null || !code.equals(formCode)){
-                                                        //            //不一致，报错
-                                                        //            return Result.fail("验证码错误");
-                                                        //        }
         //3.从redis查询验证码并校验
         String code = stringRedisTemplate.opsForValue().get(LOGIN_CODE_KEY + phone);
                 String formCode = loginForm.getCode();
@@ -93,8 +83,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             //6.用户不存在，创建新用户
             user=createUserWithPhone(phone);
         }
-                                                        //        //7.保存用户到session
-                                                        //        session.setAttribute("user", BeanUtil.copyProperties(user, UserDTO.class));
+
         // 7.保存用户到redis中
         // 7.1.随机生成token作为登录令牌
         String token = UUID.randomUUID().toString(true);
