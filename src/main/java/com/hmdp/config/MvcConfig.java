@@ -17,7 +17,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     /**
     添加拦截器
-    InterceptorRegistry registry是拦截器的注册器
+    InterceptorRegistry registry 是拦截器的注册器
     excludePathPatterns 排除无需拦截的路径
      */
     @Override
@@ -32,6 +32,7 @@ public class MvcConfig implements WebMvcConfigurer {
                         "/user/code",
                         "/user/login"
                 ).order(1);
-        registry.addInterceptor((new RefreshTokenInterceptor(stringRedisTemplate))).addPathPatterns("/**").order(0);
+        registry.addInterceptor((new RefreshTokenInterceptor(stringRedisTemplate)))
+                .addPathPatterns("/**").order(0);
     }
 }
